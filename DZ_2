@@ -1,0 +1,26 @@
+import random
+
+def get_numbers_ticket(min, max, quantity):
+    '''
+    Параметри функції:
+    min - мінімальне можливе число у наборі (не менше 1).
+    max - максимальне можливе число у наборі (не більше 1000).
+    quantity - кількість чисел, які потрібно вибрати (значення між min і max).
+    Функція повертає список випадково вибраних, відсортованих чиселу заданому діапазоні.
+    '''
+    dict_1 = []
+    try:
+        if min>=1 and max<=1000:
+            for i in range(min, max+1):
+                dict_1.append(i)
+            vibor = random.sample(dict_1, quantity)
+            vibor.sort()
+            return(vibor)
+        else:
+            dict_1 = []
+            return(dict_1)
+    except ValueError:
+        return('Non correct Value')
+    
+lottery_numbers = get_numbers_ticket(1, 49, 6)
+print("Ваші лотерейні числа:", lottery_numbers)
