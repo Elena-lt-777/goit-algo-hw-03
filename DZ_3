@@ -1,26 +1,31 @@
-import random
+import re
 
-def get_numbers_ticket(min, max, quantity):
+def normalize_phone(phone_number):
     '''
-    Параметри функції:
-    min - мінімальне можливе число у наборі (не менше 1).
-    max - максимальне можливе число у наборі (не більше 1000).
-    quantity - кількість чисел, які потрібно вибрати (значення між min і max).
-    Функція повертає список випадково вибраних, відсортованих чиселу заданому діапазоні.
+
     '''
-    dict_1 = []
-    try:
-        if min>=1 and max<=1000:
-            for i in range(min, max+1):
-                dict_1.append(i)
-            vibor = random.sample(dict_1, quantity)
-            vibor.sort()
-            return(vibor)
+    pattern = r'[\\t\\n\s()-]'
+    replacement = ''
+    non_prob = re.sub(pattern, replacement, phone_number)
+    print(non_prob)
+    if not non_prob.startswith('+'):
+        if non_prob.startswith('380'):
+            non_prob = '+' + non_prob
         else:
-            dict_1 = []
-            return(dict_1)
-    except ValueError:
-        return('Non correct Value')
-    
-lottery_numbers = get_numbers_ticket(1, 49, 6)
-print("Ваші лотерейні числа:", lottery_numbers)
+            non_prob = '+38' + non_prob
+    return(non_prob)
+
+raw_numbers = [
+    "067\\t123 4567",
+    "(095) 234-5678\\n",
+    "+380 44 123 4567",
+    "380501234567",
+    "    +38(050)123-32-34",
+    "     0503451234",
+    "(050)8889900",
+    "38050-111-22-22",
+    "38050 111 22 11   ",
+]
+
+sanitized_numbers = [normalize_phone(num) for num in raw_numbers]
+print("Нормалізовані номери телефонів для SMS-розсилки:", sanitized_numbers)
